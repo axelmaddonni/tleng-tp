@@ -18,58 +18,110 @@ En el segundo caso, podemos hacer algunas cosas "extras", como se
 muestra aquí abajo.
 
 """
-reserved = {
-  'if': 'IF',
-  'then': 'THEN',
-  'else': 'ELSE',
-  '\\': 'ABS',
-  '(' : '(',
-  ')' : ')',
-  ':': ':',
-  '.': '.',
-  '->': '->',
-  'Bool': 'BOOL',
-  'Nat': 'NAT'
-}
+literals = ['\\', '(', ')', ':', '.', ' ']
 
-tokens = (
+tokens = [
+  'IF',
+  'THEN',
+  'ELSE',
+  'TO',
+  'BOOL',
   'VAR',
-  'TRUE',
-  'FALSE',
-  'ZERO',
   'NUM',
   'SUC',
   'PRED',
-  'IS_ZERO'
-)
+  'IS_ZERO',
+  'TBOOL',
+  'TNAT'
+]
 
-t_SUC = r'suc(.+)'
-t_PRED = r'pred(.+)'
-t_IS_ZERO = r'isZero(.+)'
+class Nat:
+  def __init__(self, n):
+    self._value = n
+
+  def suc(self):
+    self.value = self.value + 1
+
+  def pred(self):
+    if self.isZero():
+      self.value = self.value - 1
+
+  def isZero(self):
+    return Bool(self._value == 0)
+
+  def value(self):
+    return self._value
+  
+  def type(self):
+    return 'Nat'
+
+def t_NUM(t):
+  r'\d+'
+  t.value = Nat(int(t.value))
+  return t
+
+def t_SUC(t):
+  r'suc'
+  return t
+
+def t_PRED(t):
+  r'pred'
+  return t
+
+class Bool:
+  def __init__(self, b):
+    self._value = b
+
+  def ifThenElse(self, ifTrue, ifFalse):
+    if self.value:
+      return ifTrue
+    else:
+      return ifFalse
+
+  def type(self):
+    return 'Bool'
+
+def t_BOOL(t):
+  r'true|false'
+  t.value = Bool(t.value == 'true')
+  return t
+
+def t_IS_ZERO(t):
+  r'isZero'
+  return t
+
+def t_IF(t):
+  r'if'
+  return t
+
+def t_THEN(t):
+  r'then'
+  return t
+
+def t_ELSE(t):
+  r'else'
+  return t
+
+def t_TO(t):
+  r'\->'
+  return t
+
+def t_TBOOL(t):
+  r'Bool'
+  return t
+
+def t_TNAT(t):
+  r'Nat'
+  return t
 
 def t_VAR(t):
   r'[a-z]'
   return t
 
-def t_TRUE(t):
-  r'true'
-  t.value = True
-  return t
-
-def t_FALSE(t):
-  r'false'
-  t.value = False
-  return t
-
-def t_ZERO(t):
-  r'0'
-  t.value = 0
-  return t
-
-def t_NUM(t):
-  r'\d+'
-  t.value = int(t.value)
-  return t
+# Error handling rule
+def t_error(t):
+    print("Illegal character '%s'" % t.value[0])
+    t.lexer.skip(1)
 
 # Build the lexer
 lexer = lex.lex()
