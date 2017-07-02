@@ -10,9 +10,6 @@ from .lexer import tokens
 #   ('right', 'UMINUS'),
 # ]
 
-### Habria que agregar una produccion nueva de tal
-### manera que en ese paso se devuelva el valor + tipo (de ser posible)
-
 def p_term_base(p):
   '''term : n
           | BOOL '''

@@ -18,8 +18,10 @@ En el segundo caso, podemos hacer algunas cosas "extras", como se
 muestra aquí abajo.
 
 """
+### Definimos tokens literales ###
 literals = ['\\', '(', ')', ':', '.']
 
+### Definimos el resto de los tokens ###
 tokens = [
   'IF',
   'THEN',
@@ -35,8 +37,9 @@ tokens = [
   'TNAT'
 ]
 
-t_ignore = ' '
+t_ignore = ' ' # No estoy seguro de que a futuro podamos seguir ignorando espacios
 
+### Definimos las clases ###
 class Nat:
   def __init__(self, n):
     self._value = n
@@ -60,19 +63,6 @@ class Nat:
   def type(self):
     return 'Nat'
 
-def t_NUM(t):
-  r'\d+'
-  t.value = Nat(int(t.value))
-  return t
-
-def t_SUC(t):
-  r'suc'
-  return t
-
-def t_PRED(t):
-  r'pred'
-  return t
-
 class Bool:
   def __init__(self, b):
     self._value = b
@@ -91,6 +81,20 @@ class Bool:
 
   def type(self):
     return 'Bool'
+
+### Definimos las regex que matchean para cada token. Notar que el orden en que están definidas importa, de lo contrario VAR se comería suc, pred, etc ###
+def t_NUM(t):
+  r'\d+'
+  t.value = Nat(int(t.value))
+  return t
+
+def t_SUC(t):
+  r'suc'
+  return t
+
+def t_PRED(t):
+  r'pred'
+  return t
 
 def t_BOOL(t):
   r'true|false'
