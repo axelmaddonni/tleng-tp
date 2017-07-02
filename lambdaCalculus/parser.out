@@ -1,35 +1,36 @@
-Created by PLY version 3.10 (http://www.dabeaz.com/ply)
+Created by PLY version 3.7 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
     TO
     TNAT
-    TBOOL
-    VAR
     IS_ZERO
+    VAR
+    TBOOL
 
 Grammar
 
-Rule 0     S' -> n
-Rule 1     n -> NUM
-Rule 2     n -> SUC ( n )
-Rule 3     n -> PRED ( n )
-Rule 4     b -> BOOL
-Rule 5     term -> IF BOOL THEN term ELSE term
+Rule 0     S' -> term
+Rule 1     term -> n
+Rule 2     term -> BOOL
+Rule 3     term -> IF term THEN term ELSE term
+Rule 4     n -> NUM
+Rule 5     n -> SUC ( term )
+Rule 6     n -> PRED ( term )
 
 Terminals, with rules where they appear
 
-(                    : 2 3
-)                    : 2 3
-BOOL                 : 4 5
-ELSE                 : 5
-IF                   : 5
+(                    : 5 6
+)                    : 5 6
+BOOL                 : 2
+ELSE                 : 3
+IF                   : 3
 IS_ZERO              : 
-NUM                  : 1
-PRED                 : 3
-SUC                  : 2
+NUM                  : 4
+PRED                 : 6
+SUC                  : 5
 TBOOL                : 
-THEN                 : 5
+THEN                 : 3
 TNAT                 : 
 TO                   : 
 VAR                  : 
@@ -37,108 +38,229 @@ error                :
 
 Nonterminals, with rules where they appear
 
-b                    : 
-n                    : 2 3 0
-term                 : 5 5
-
-       : 2 3 5 0
-term                 : 7 7
+n                    : 1
+term                 : 3 3 3 5 6 0
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . n
-    (1) n -> . NUM
-    (2) n -> . SUC ( n )
-    (3) n -> . PRED ( n )
+    (0) S' -> . term
+    (1) term -> . n
+    (2) term -> . BOOL
+    (3) term -> . IF term THEN term ELSE term
+    (4) n -> . NUM
+    (5) n -> . SUC ( term )
+    (6) n -> . PRED ( term )
 
-    NUM             shift and go to state 1
-    SUC             shift and go to state 4
-    PRED            shift and go to state 3
+    BOOL            shift and go to state 4
+    IF              shift and go to state 7
+    NUM             shift and go to state 3
+    SUC             shift and go to state 2
+    PRED            shift and go to state 5
 
-    n                              shift and go to state 2
+    term                           shift and go to state 1
+    n                              shift and go to state 6
 
 state 1
 
-    (1) n -> NUM .
+    (0) S' -> term .
 
-    $end            reduce using rule 1 (n -> NUM .)
-    )               reduce using rule 1 (n -> NUM .)
 
 
 state 2
 
-    (0) S' -> n .
+    (5) n -> SUC . ( term )
 
+    (               shift and go to state 8
 
 
 state 3
 
-    (3) n -> PRED . ( n )
+    (4) n -> NUM .
 
-    (               shift and go to state 5
+    $end            reduce using rule 4 (n -> NUM .)
+    )               reduce using rule 4 (n -> NUM .)
+    ELSE            reduce using rule 4 (n -> NUM .)
+    THEN            reduce using rule 4 (n -> NUM .)
 
 
 state 4
 
-    (2) n -> SUC . ( n )
+    (2) term -> BOOL .
 
-    (               shift and go to state 6
+    ELSE            reduce using rule 2 (term -> BOOL .)
+    )               reduce using rule 2 (term -> BOOL .)
+    $end            reduce using rule 2 (term -> BOOL .)
+    THEN            reduce using rule 2 (term -> BOOL .)
 
 
 state 5
 
-    (3) n -> PRED ( . n )
-    (1) n -> . NUM
-    (2) n -> . SUC ( n )
-    (3) n -> . PRED ( n )
+    (6) n -> PRED . ( term )
 
-    NUM             shift and go to state 1
-    SUC             shift and go to state 4
-    PRED            shift and go to state 3
+    (               shift and go to state 9
 
-    n                              shift and go to state 7
 
 state 6
 
-    (2) n -> SUC ( . n )
-    (1) n -> . NUM
-    (2) n -> . SUC ( n )
-    (3) n -> . PRED ( n )
+    (1) term -> n .
 
-    NUM             shift and go to state 1
-    SUC             shift and go to state 4
-    PRED            shift and go to state 3
+    ELSE            reduce using rule 1 (term -> n .)
+    )               reduce using rule 1 (term -> n .)
+    $end            reduce using rule 1 (term -> n .)
+    THEN            reduce using rule 1 (term -> n .)
 
-    n                              shift and go to state 8
 
 state 7
 
-    (3) n -> PRED ( n . )
+    (3) term -> IF . term THEN term ELSE term
+    (1) term -> . n
+    (2) term -> . BOOL
+    (3) term -> . IF term THEN term ELSE term
+    (4) n -> . NUM
+    (5) n -> . SUC ( term )
+    (6) n -> . PRED ( term )
 
-    )               shift and go to state 9
+    BOOL            shift and go to state 4
+    IF              shift and go to state 7
+    NUM             shift and go to state 3
+    SUC             shift and go to state 2
+    PRED            shift and go to state 5
 
+    term                           shift and go to state 10
+    n                              shift and go to state 6
 
 state 8
 
-    (2) n -> SUC ( n . )
+    (5) n -> SUC ( . term )
+    (1) term -> . n
+    (2) term -> . BOOL
+    (3) term -> . IF term THEN term ELSE term
+    (4) n -> . NUM
+    (5) n -> . SUC ( term )
+    (6) n -> . PRED ( term )
 
-    )               shift and go to state 10
+    BOOL            shift and go to state 4
+    IF              shift and go to state 7
+    NUM             shift and go to state 3
+    SUC             shift and go to state 2
+    PRED            shift and go to state 5
 
+    term                           shift and go to state 11
+    n                              shift and go to state 6
 
 state 9
 
-    (3) n -> PRED ( n ) .
+    (6) n -> PRED ( . term )
+    (1) term -> . n
+    (2) term -> . BOOL
+    (3) term -> . IF term THEN term ELSE term
+    (4) n -> . NUM
+    (5) n -> . SUC ( term )
+    (6) n -> . PRED ( term )
 
-    $end            reduce using rule 3 (n -> PRED ( n ) .)
-    )               reduce using rule 3 (n -> PRED ( n ) .)
+    BOOL            shift and go to state 4
+    IF              shift and go to state 7
+    NUM             shift and go to state 3
+    SUC             shift and go to state 2
+    PRED            shift and go to state 5
 
+    term                           shift and go to state 12
+    n                              shift and go to state 6
 
 state 10
 
-    (2) n -> SUC ( n ) .
+    (3) term -> IF term . THEN term ELSE term
 
-    $end            reduce using rule 2 (n -> SUC ( n ) .)
-    )               reduce using rule 2 (n -> SUC ( n ) .)
+    THEN            shift and go to state 13
+
+
+state 11
+
+    (5) n -> SUC ( term . )
+
+    )               shift and go to state 14
+
+
+state 12
+
+    (6) n -> PRED ( term . )
+
+    )               shift and go to state 15
+
+
+state 13
+
+    (3) term -> IF term THEN . term ELSE term
+    (1) term -> . n
+    (2) term -> . BOOL
+    (3) term -> . IF term THEN term ELSE term
+    (4) n -> . NUM
+    (5) n -> . SUC ( term )
+    (6) n -> . PRED ( term )
+
+    BOOL            shift and go to state 4
+    IF              shift and go to state 7
+    NUM             shift and go to state 3
+    SUC             shift and go to state 2
+    PRED            shift and go to state 5
+
+    term                           shift and go to state 16
+    n                              shift and go to state 6
+
+state 14
+
+    (5) n -> SUC ( term ) .
+
+    $end            reduce using rule 5 (n -> SUC ( term ) .)
+    )               reduce using rule 5 (n -> SUC ( term ) .)
+    ELSE            reduce using rule 5 (n -> SUC ( term ) .)
+    THEN            reduce using rule 5 (n -> SUC ( term ) .)
+
+
+state 15
+
+    (6) n -> PRED ( term ) .
+
+    $end            reduce using rule 6 (n -> PRED ( term ) .)
+    )               reduce using rule 6 (n -> PRED ( term ) .)
+    ELSE            reduce using rule 6 (n -> PRED ( term ) .)
+    THEN            reduce using rule 6 (n -> PRED ( term ) .)
+
+
+state 16
+
+    (3) term -> IF term THEN term . ELSE term
+
+    ELSE            shift and go to state 17
+
+
+state 17
+
+    (3) term -> IF term THEN term ELSE . term
+    (1) term -> . n
+    (2) term -> . BOOL
+    (3) term -> . IF term THEN term ELSE term
+    (4) n -> . NUM
+    (5) n -> . SUC ( term )
+    (6) n -> . PRED ( term )
+
+    BOOL            shift and go to state 4
+    IF              shift and go to state 7
+    NUM             shift and go to state 3
+    SUC             shift and go to state 2
+    PRED            shift and go to state 5
+
+    term                           shift and go to state 18
+    n                              shift and go to state 6
+
+state 18
+
+    (3) term -> IF term THEN term ELSE term .
+
+    ELSE            reduce using rule 3 (term -> IF term THEN term ELSE term .)
+    )               reduce using rule 3 (term -> IF term THEN term ELSE term .)
+    $end            reduce using rule 3 (term -> IF term THEN term ELSE term .)
+    THEN            reduce using rule 3 (term -> IF term THEN term ELSE term .)
 

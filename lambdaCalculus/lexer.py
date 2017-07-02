@@ -18,7 +18,7 @@ En el segundo caso, podemos hacer algunas cosas "extras", como se
 muestra aquí abajo.
 
 """
-literals = ['\\', '(', ')', ':', '.', ' ']
+literals = ['\\', '(', ')', ':', '.']
 
 tokens = [
   'IF',
@@ -35,16 +35,21 @@ tokens = [
   'TNAT'
 ]
 
+t_ignore = ' '
+
 class Nat:
   def __init__(self, n):
     self._value = n
 
+  def __repr__(self):
+    return str(self._value) + ':Nat'
+
   def suc(self):
-    self.value = self.value + 1
+    self._value = self._value + 1
 
   def pred(self):
-    if self.isZero():
-      self.value = self.value - 1
+    if self._value != 0:
+      self._value = self._value - 1
 
   def isZero(self):
     return Bool(self._value == 0)
@@ -72,8 +77,14 @@ class Bool:
   def __init__(self, b):
     self._value = b
 
+  def __repr__(self):
+    if self._value:
+      return 'true:Bool'
+    else:
+      return 'false:Bool'
+
   def ifThenElse(self, ifTrue, ifFalse):
-    if self.value:
+    if self._value:
       return ifTrue
     else:
       return ifFalse
