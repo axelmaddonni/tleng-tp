@@ -12,16 +12,29 @@ from .lexer import tokens
 
 def p_term_base(p):
   '''term : n
-          | BOOL '''
+          | BOOL
+          | VAR '''
   p[0] = p[1]
 
-def p_term_bool_if(p):
+def p_term_if(p):
   '''term : IF term THEN term ELSE term '''
   if p[2].type() == 'Bool' and p[4].type() == p[6].type():
     p[0] = p[2].ifThenElse(p[4], p[6])
   else:
     print("Error en un if. Los valores son p[2]:", p[2], "p[4]:", p[4], "p[6]:", p[6])
     parser.restart()
+
+def p_term_abs(p):
+  '''term : VAR ':' type '.' term '''
+  p[0] = Abstraction(p[1], p[3], p[5])
+
+
+def p_type(p):
+  '''type : TBOOL
+          | TNAT 
+          | type TO type 
+          | '(' type TO type ')' '''
+  p[0] = p[1]
 
 def p_n_num(p):
   'n : NUM'

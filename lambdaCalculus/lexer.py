@@ -82,6 +82,31 @@ class Bool:
   def type(self):
     return 'Bool'
 
+class Var:
+  def __init__(self, name):
+    self._name = name
+    self._value = None
+    self._type = None
+
+  def __repr__(self):
+    return self._name
+
+  def isFree(self):
+    return self._value == None
+
+  def bind(self, value):
+    if self.isFree():
+      self._value = value
+      self._type = value.type()
+
+class Abstraction:
+  def __init__(self, varname, vartype, body):
+    self._var = varname
+    self._type = vartype
+    self._body = body
+
+  def __repr__(self):
+    return '\\' + self._var + ':' + self._type + '.' + self._body
 ### Definimos las regex que matchean para cada token. Notar que el orden en que están definidas importa, de lo contrario VAR se comería suc, pred, etc ###
 def t_NUM(t):
   r'\d+'
