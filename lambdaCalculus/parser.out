@@ -1,465 +1,790 @@
-Created by PLY version 3.7 (http://www.dabeaz.com/ply)
-
-Unused terminals:
-
-    IS_ZERO
+Created by PLY version 3.10 (http://www.dabeaz.com/ply)
 
 Grammar
 
-Rule 0     S' -> term
-Rule 1     term -> n
-Rule 2     term -> BOOL
-Rule 3     term -> VAR
-Rule 4     term -> IF term THEN term ELSE term
-Rule 5     term -> VAR : type . term
-Rule 6     type -> TBOOL
-Rule 7     type -> TNAT
-Rule 8     type -> type TO type
-Rule 9     type -> ( type TO type )
-Rule 10    n -> NUM
-Rule 11    n -> SUC ( term )
-Rule 12    n -> PRED ( term )
+Rule 0     S' -> exp
+Rule 1     exp -> app
+Rule 2     exp -> IF exp THEN exp ELSE exp
+Rule 3     exp -> LAMBDA VAR : type . exp
+Rule 4     app -> app term
+Rule 5     app -> term
+Rule 6     term -> nat
+Rule 7     term -> bool
+Rule 8     term -> VAR
+Rule 9     nat -> NUM
+Rule 10    nat -> SUC ( exp )
+Rule 11    nat -> PRED ( exp )
+Rule 12    bool -> BOOL
+Rule 13    bool -> IS_ZERO ( exp )
+Rule 14    term -> ( exp )
+Rule 15    type -> atype
+Rule 16    type -> atype TO type
+Rule 17    atype -> TBOOL
+Rule 18    atype -> TNAT
+Rule 19    atype -> ( type )
 
 Terminals, with rules where they appear
 
-(                    : 9 11 12
-)                    : 9 11 12
-.                    : 5
-:                    : 5
-BOOL                 : 2
-ELSE                 : 4
-IF                   : 4
-IS_ZERO              : 
-NUM                  : 10
-PRED                 : 12
-SUC                  : 11
-TBOOL                : 6
-THEN                 : 4
-TNAT                 : 7
-TO                   : 8 9
-VAR                  : 3 5
+(                    : 10 11 13 14 19
+)                    : 10 11 13 14 19
+.                    : 3
+:                    : 3
+BOOL                 : 12
+ELSE                 : 2
+IF                   : 2
+IS_ZERO              : 13
+LAMBDA               : 3
+NUM                  : 9
+PRED                 : 11
+SUC                  : 10
+TBOOL                : 17
+THEN                 : 2
+TNAT                 : 18
+TO                   : 16
+VAR                  : 3 8
 error                : 
 
 Nonterminals, with rules where they appear
 
-n                    : 1
-term                 : 4 4 4 5 11 12 0
-type                 : 5 8 8 9 9
+app                  : 1 4
+atype                : 15 16
+bool                 : 7
+exp                  : 2 2 2 3 10 11 13 14 0
+nat                  : 6
+term                 : 4 5
+type                 : 3 16 19
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . term
-    (1) term -> . n
-    (2) term -> . BOOL
-    (3) term -> . VAR
-    (4) term -> . IF term THEN term ELSE term
-    (5) term -> . VAR : type . term
-    (10) n -> . NUM
-    (11) n -> . SUC ( term )
-    (12) n -> . PRED ( term )
+    (0) S' -> . exp
+    (1) exp -> . app
+    (2) exp -> . IF exp THEN exp ELSE exp
+    (3) exp -> . LAMBDA VAR : type . exp
+    (4) app -> . app term
+    (5) app -> . term
+    (6) term -> . nat
+    (7) term -> . bool
+    (8) term -> . VAR
+    (14) term -> . ( exp )
+    (9) nat -> . NUM
+    (10) nat -> . SUC ( exp )
+    (11) nat -> . PRED ( exp )
+    (12) bool -> . BOOL
+    (13) bool -> . IS_ZERO ( exp )
 
-    BOOL            shift and go to state 5
-    VAR             shift and go to state 7
-    IF              shift and go to state 8
-    NUM             shift and go to state 4
+    IF              shift and go to state 13
+    LAMBDA          shift and go to state 14
+    VAR             shift and go to state 11
+    (               shift and go to state 4
+    NUM             shift and go to state 7
     SUC             shift and go to state 2
-    PRED            shift and go to state 6
+    PRED            shift and go to state 10
+    BOOL            shift and go to state 12
+    IS_ZERO         shift and go to state 6
 
     term                           shift and go to state 1
-    n                              shift and go to state 3
+    nat                            shift and go to state 3
+    app                            shift and go to state 5
+    bool                           shift and go to state 8
+    exp                            shift and go to state 9
 
 state 1
 
-    (0) S' -> term .
+    (5) app -> term .
 
+    VAR             reduce using rule 5 (app -> term .)
+    (               reduce using rule 5 (app -> term .)
+    NUM             reduce using rule 5 (app -> term .)
+    SUC             reduce using rule 5 (app -> term .)
+    PRED            reduce using rule 5 (app -> term .)
+    BOOL            reduce using rule 5 (app -> term .)
+    IS_ZERO         reduce using rule 5 (app -> term .)
+    $end            reduce using rule 5 (app -> term .)
+    )               reduce using rule 5 (app -> term .)
+    THEN            reduce using rule 5 (app -> term .)
+    ELSE            reduce using rule 5 (app -> term .)
 
 
 state 2
 
-    (11) n -> SUC . ( term )
+    (10) nat -> SUC . ( exp )
 
-    (               shift and go to state 9
+    (               shift and go to state 15
 
 
 state 3
 
-    (1) term -> n .
+    (6) term -> nat .
 
-    THEN            reduce using rule 1 (term -> n .)
-    )               reduce using rule 1 (term -> n .)
-    $end            reduce using rule 1 (term -> n .)
-    ELSE            reduce using rule 1 (term -> n .)
+    VAR             reduce using rule 6 (term -> nat .)
+    (               reduce using rule 6 (term -> nat .)
+    NUM             reduce using rule 6 (term -> nat .)
+    SUC             reduce using rule 6 (term -> nat .)
+    PRED            reduce using rule 6 (term -> nat .)
+    BOOL            reduce using rule 6 (term -> nat .)
+    IS_ZERO         reduce using rule 6 (term -> nat .)
+    )               reduce using rule 6 (term -> nat .)
+    ELSE            reduce using rule 6 (term -> nat .)
+    $end            reduce using rule 6 (term -> nat .)
+    THEN            reduce using rule 6 (term -> nat .)
 
 
 state 4
 
-    (10) n -> NUM .
+    (14) term -> ( . exp )
+    (1) exp -> . app
+    (2) exp -> . IF exp THEN exp ELSE exp
+    (3) exp -> . LAMBDA VAR : type . exp
+    (4) app -> . app term
+    (5) app -> . term
+    (6) term -> . nat
+    (7) term -> . bool
+    (8) term -> . VAR
+    (14) term -> . ( exp )
+    (9) nat -> . NUM
+    (10) nat -> . SUC ( exp )
+    (11) nat -> . PRED ( exp )
+    (12) bool -> . BOOL
+    (13) bool -> . IS_ZERO ( exp )
 
-    $end            reduce using rule 10 (n -> NUM .)
-    )               reduce using rule 10 (n -> NUM .)
-    ELSE            reduce using rule 10 (n -> NUM .)
-    THEN            reduce using rule 10 (n -> NUM .)
+    IF              shift and go to state 13
+    LAMBDA          shift and go to state 14
+    VAR             shift and go to state 11
+    (               shift and go to state 4
+    NUM             shift and go to state 7
+    SUC             shift and go to state 2
+    PRED            shift and go to state 10
+    BOOL            shift and go to state 12
+    IS_ZERO         shift and go to state 6
 
+    term                           shift and go to state 1
+    nat                            shift and go to state 3
+    app                            shift and go to state 5
+    bool                           shift and go to state 8
+    exp                            shift and go to state 16
 
 state 5
 
-    (2) term -> BOOL .
+    (1) exp -> app .
+    (4) app -> app . term
+    (6) term -> . nat
+    (7) term -> . bool
+    (8) term -> . VAR
+    (14) term -> . ( exp )
+    (9) nat -> . NUM
+    (10) nat -> . SUC ( exp )
+    (11) nat -> . PRED ( exp )
+    (12) bool -> . BOOL
+    (13) bool -> . IS_ZERO ( exp )
 
-    THEN            reduce using rule 2 (term -> BOOL .)
-    )               reduce using rule 2 (term -> BOOL .)
-    $end            reduce using rule 2 (term -> BOOL .)
-    ELSE            reduce using rule 2 (term -> BOOL .)
+    ELSE            reduce using rule 1 (exp -> app .)
+    )               reduce using rule 1 (exp -> app .)
+    $end            reduce using rule 1 (exp -> app .)
+    THEN            reduce using rule 1 (exp -> app .)
+    VAR             shift and go to state 11
+    (               shift and go to state 4
+    NUM             shift and go to state 7
+    SUC             shift and go to state 2
+    PRED            shift and go to state 10
+    BOOL            shift and go to state 12
+    IS_ZERO         shift and go to state 6
 
+    bool                           shift and go to state 8
+    term                           shift and go to state 17
+    nat                            shift and go to state 3
 
 state 6
 
-    (12) n -> PRED . ( term )
+    (13) bool -> IS_ZERO . ( exp )
 
-    (               shift and go to state 10
+    (               shift and go to state 18
 
 
 state 7
 
-    (3) term -> VAR .
-    (5) term -> VAR . : type . term
+    (9) nat -> NUM .
 
-    THEN            reduce using rule 3 (term -> VAR .)
-    )               reduce using rule 3 (term -> VAR .)
-    $end            reduce using rule 3 (term -> VAR .)
-    ELSE            reduce using rule 3 (term -> VAR .)
-    :               shift and go to state 11
+    VAR             reduce using rule 9 (nat -> NUM .)
+    (               reduce using rule 9 (nat -> NUM .)
+    NUM             reduce using rule 9 (nat -> NUM .)
+    SUC             reduce using rule 9 (nat -> NUM .)
+    PRED            reduce using rule 9 (nat -> NUM .)
+    BOOL            reduce using rule 9 (nat -> NUM .)
+    IS_ZERO         reduce using rule 9 (nat -> NUM .)
+    $end            reduce using rule 9 (nat -> NUM .)
+    )               reduce using rule 9 (nat -> NUM .)
+    THEN            reduce using rule 9 (nat -> NUM .)
+    ELSE            reduce using rule 9 (nat -> NUM .)
 
 
 state 8
 
-    (4) term -> IF . term THEN term ELSE term
-    (1) term -> . n
-    (2) term -> . BOOL
-    (3) term -> . VAR
-    (4) term -> . IF term THEN term ELSE term
-    (5) term -> . VAR : type . term
-    (10) n -> . NUM
-    (11) n -> . SUC ( term )
-    (12) n -> . PRED ( term )
+    (7) term -> bool .
 
-    BOOL            shift and go to state 5
-    VAR             shift and go to state 7
-    IF              shift and go to state 8
-    NUM             shift and go to state 4
-    SUC             shift and go to state 2
-    PRED            shift and go to state 6
+    VAR             reduce using rule 7 (term -> bool .)
+    (               reduce using rule 7 (term -> bool .)
+    NUM             reduce using rule 7 (term -> bool .)
+    SUC             reduce using rule 7 (term -> bool .)
+    PRED            reduce using rule 7 (term -> bool .)
+    BOOL            reduce using rule 7 (term -> bool .)
+    IS_ZERO         reduce using rule 7 (term -> bool .)
+    )               reduce using rule 7 (term -> bool .)
+    ELSE            reduce using rule 7 (term -> bool .)
+    $end            reduce using rule 7 (term -> bool .)
+    THEN            reduce using rule 7 (term -> bool .)
 
-    term                           shift and go to state 12
-    n                              shift and go to state 3
 
 state 9
 
-    (11) n -> SUC ( . term )
-    (1) term -> . n
-    (2) term -> . BOOL
-    (3) term -> . VAR
-    (4) term -> . IF term THEN term ELSE term
-    (5) term -> . VAR : type . term
-    (10) n -> . NUM
-    (11) n -> . SUC ( term )
-    (12) n -> . PRED ( term )
+    (0) S' -> exp .
 
-    BOOL            shift and go to state 5
-    VAR             shift and go to state 7
-    IF              shift and go to state 8
-    NUM             shift and go to state 4
-    SUC             shift and go to state 2
-    PRED            shift and go to state 6
 
-    term                           shift and go to state 13
-    n                              shift and go to state 3
 
 state 10
 
-    (12) n -> PRED ( . term )
-    (1) term -> . n
-    (2) term -> . BOOL
-    (3) term -> . VAR
-    (4) term -> . IF term THEN term ELSE term
-    (5) term -> . VAR : type . term
-    (10) n -> . NUM
-    (11) n -> . SUC ( term )
-    (12) n -> . PRED ( term )
+    (11) nat -> PRED . ( exp )
 
-    BOOL            shift and go to state 5
-    VAR             shift and go to state 7
-    IF              shift and go to state 8
-    NUM             shift and go to state 4
-    SUC             shift and go to state 2
-    PRED            shift and go to state 6
+    (               shift and go to state 19
 
-    term                           shift and go to state 14
-    n                              shift and go to state 3
 
 state 11
 
-    (5) term -> VAR : . type . term
-    (6) type -> . TBOOL
-    (7) type -> . TNAT
-    (8) type -> . type TO type
-    (9) type -> . ( type TO type )
+    (8) term -> VAR .
 
-    TBOOL           shift and go to state 17
-    TNAT            shift and go to state 16
-    (               shift and go to state 15
+    VAR             reduce using rule 8 (term -> VAR .)
+    (               reduce using rule 8 (term -> VAR .)
+    NUM             reduce using rule 8 (term -> VAR .)
+    SUC             reduce using rule 8 (term -> VAR .)
+    PRED            reduce using rule 8 (term -> VAR .)
+    BOOL            reduce using rule 8 (term -> VAR .)
+    IS_ZERO         reduce using rule 8 (term -> VAR .)
+    )               reduce using rule 8 (term -> VAR .)
+    ELSE            reduce using rule 8 (term -> VAR .)
+    $end            reduce using rule 8 (term -> VAR .)
+    THEN            reduce using rule 8 (term -> VAR .)
 
-    type                           shift and go to state 18
 
 state 12
 
-    (4) term -> IF term . THEN term ELSE term
+    (12) bool -> BOOL .
 
-    THEN            shift and go to state 19
+    VAR             reduce using rule 12 (bool -> BOOL .)
+    (               reduce using rule 12 (bool -> BOOL .)
+    NUM             reduce using rule 12 (bool -> BOOL .)
+    SUC             reduce using rule 12 (bool -> BOOL .)
+    PRED            reduce using rule 12 (bool -> BOOL .)
+    BOOL            reduce using rule 12 (bool -> BOOL .)
+    IS_ZERO         reduce using rule 12 (bool -> BOOL .)
+    ELSE            reduce using rule 12 (bool -> BOOL .)
+    $end            reduce using rule 12 (bool -> BOOL .)
+    )               reduce using rule 12 (bool -> BOOL .)
+    THEN            reduce using rule 12 (bool -> BOOL .)
 
 
 state 13
 
-    (11) n -> SUC ( term . )
+    (2) exp -> IF . exp THEN exp ELSE exp
+    (1) exp -> . app
+    (2) exp -> . IF exp THEN exp ELSE exp
+    (3) exp -> . LAMBDA VAR : type . exp
+    (4) app -> . app term
+    (5) app -> . term
+    (6) term -> . nat
+    (7) term -> . bool
+    (8) term -> . VAR
+    (14) term -> . ( exp )
+    (9) nat -> . NUM
+    (10) nat -> . SUC ( exp )
+    (11) nat -> . PRED ( exp )
+    (12) bool -> . BOOL
+    (13) bool -> . IS_ZERO ( exp )
 
-    )               shift and go to state 20
+    IF              shift and go to state 13
+    LAMBDA          shift and go to state 14
+    VAR             shift and go to state 11
+    (               shift and go to state 4
+    NUM             shift and go to state 7
+    SUC             shift and go to state 2
+    PRED            shift and go to state 10
+    BOOL            shift and go to state 12
+    IS_ZERO         shift and go to state 6
 
+    term                           shift and go to state 1
+    nat                            shift and go to state 3
+    app                            shift and go to state 5
+    bool                           shift and go to state 8
+    exp                            shift and go to state 20
 
 state 14
 
-    (12) n -> PRED ( term . )
+    (3) exp -> LAMBDA . VAR : type . exp
 
-    )               shift and go to state 21
+    VAR             shift and go to state 21
 
 
 state 15
 
-    (9) type -> ( . type TO type )
-    (6) type -> . TBOOL
-    (7) type -> . TNAT
-    (8) type -> . type TO type
-    (9) type -> . ( type TO type )
+    (10) nat -> SUC ( . exp )
+    (1) exp -> . app
+    (2) exp -> . IF exp THEN exp ELSE exp
+    (3) exp -> . LAMBDA VAR : type . exp
+    (4) app -> . app term
+    (5) app -> . term
+    (6) term -> . nat
+    (7) term -> . bool
+    (8) term -> . VAR
+    (14) term -> . ( exp )
+    (9) nat -> . NUM
+    (10) nat -> . SUC ( exp )
+    (11) nat -> . PRED ( exp )
+    (12) bool -> . BOOL
+    (13) bool -> . IS_ZERO ( exp )
 
-    TBOOL           shift and go to state 17
-    TNAT            shift and go to state 16
-    (               shift and go to state 15
+    IF              shift and go to state 13
+    LAMBDA          shift and go to state 14
+    VAR             shift and go to state 11
+    (               shift and go to state 4
+    NUM             shift and go to state 7
+    SUC             shift and go to state 2
+    PRED            shift and go to state 10
+    BOOL            shift and go to state 12
+    IS_ZERO         shift and go to state 6
 
-    type                           shift and go to state 22
+    term                           shift and go to state 1
+    nat                            shift and go to state 3
+    app                            shift and go to state 5
+    bool                           shift and go to state 8
+    exp                            shift and go to state 22
 
 state 16
 
-    (7) type -> TNAT .
+    (14) term -> ( exp . )
 
-    TO              reduce using rule 7 (type -> TNAT .)
-    .               reduce using rule 7 (type -> TNAT .)
-    )               reduce using rule 7 (type -> TNAT .)
+    )               shift and go to state 23
 
 
 state 17
 
-    (6) type -> TBOOL .
+    (4) app -> app term .
 
-    TO              reduce using rule 6 (type -> TBOOL .)
-    .               reduce using rule 6 (type -> TBOOL .)
-    )               reduce using rule 6 (type -> TBOOL .)
+    VAR             reduce using rule 4 (app -> app term .)
+    (               reduce using rule 4 (app -> app term .)
+    NUM             reduce using rule 4 (app -> app term .)
+    SUC             reduce using rule 4 (app -> app term .)
+    PRED            reduce using rule 4 (app -> app term .)
+    BOOL            reduce using rule 4 (app -> app term .)
+    IS_ZERO         reduce using rule 4 (app -> app term .)
+    $end            reduce using rule 4 (app -> app term .)
+    )               reduce using rule 4 (app -> app term .)
+    THEN            reduce using rule 4 (app -> app term .)
+    ELSE            reduce using rule 4 (app -> app term .)
 
 
 state 18
 
-    (5) term -> VAR : type . . term
-    (8) type -> type . TO type
+    (13) bool -> IS_ZERO ( . exp )
+    (1) exp -> . app
+    (2) exp -> . IF exp THEN exp ELSE exp
+    (3) exp -> . LAMBDA VAR : type . exp
+    (4) app -> . app term
+    (5) app -> . term
+    (6) term -> . nat
+    (7) term -> . bool
+    (8) term -> . VAR
+    (14) term -> . ( exp )
+    (9) nat -> . NUM
+    (10) nat -> . SUC ( exp )
+    (11) nat -> . PRED ( exp )
+    (12) bool -> . BOOL
+    (13) bool -> . IS_ZERO ( exp )
 
-    .               shift and go to state 23
-    TO              shift and go to state 24
+    IF              shift and go to state 13
+    LAMBDA          shift and go to state 14
+    VAR             shift and go to state 11
+    (               shift and go to state 4
+    NUM             shift and go to state 7
+    SUC             shift and go to state 2
+    PRED            shift and go to state 10
+    BOOL            shift and go to state 12
+    IS_ZERO         shift and go to state 6
 
+    term                           shift and go to state 1
+    nat                            shift and go to state 3
+    app                            shift and go to state 5
+    bool                           shift and go to state 8
+    exp                            shift and go to state 24
 
 state 19
 
-    (4) term -> IF term THEN . term ELSE term
-    (1) term -> . n
-    (2) term -> . BOOL
-    (3) term -> . VAR
-    (4) term -> . IF term THEN term ELSE term
-    (5) term -> . VAR : type . term
-    (10) n -> . NUM
-    (11) n -> . SUC ( term )
-    (12) n -> . PRED ( term )
+    (11) nat -> PRED ( . exp )
+    (1) exp -> . app
+    (2) exp -> . IF exp THEN exp ELSE exp
+    (3) exp -> . LAMBDA VAR : type . exp
+    (4) app -> . app term
+    (5) app -> . term
+    (6) term -> . nat
+    (7) term -> . bool
+    (8) term -> . VAR
+    (14) term -> . ( exp )
+    (9) nat -> . NUM
+    (10) nat -> . SUC ( exp )
+    (11) nat -> . PRED ( exp )
+    (12) bool -> . BOOL
+    (13) bool -> . IS_ZERO ( exp )
 
-    BOOL            shift and go to state 5
-    VAR             shift and go to state 7
-    IF              shift and go to state 8
-    NUM             shift and go to state 4
+    IF              shift and go to state 13
+    LAMBDA          shift and go to state 14
+    VAR             shift and go to state 11
+    (               shift and go to state 4
+    NUM             shift and go to state 7
     SUC             shift and go to state 2
-    PRED            shift and go to state 6
+    PRED            shift and go to state 10
+    BOOL            shift and go to state 12
+    IS_ZERO         shift and go to state 6
 
-    term                           shift and go to state 25
-    n                              shift and go to state 3
+    term                           shift and go to state 1
+    nat                            shift and go to state 3
+    app                            shift and go to state 5
+    bool                           shift and go to state 8
+    exp                            shift and go to state 25
 
 state 20
 
-    (11) n -> SUC ( term ) .
+    (2) exp -> IF exp . THEN exp ELSE exp
 
-    $end            reduce using rule 11 (n -> SUC ( term ) .)
-    )               reduce using rule 11 (n -> SUC ( term ) .)
-    ELSE            reduce using rule 11 (n -> SUC ( term ) .)
-    THEN            reduce using rule 11 (n -> SUC ( term ) .)
+    THEN            shift and go to state 26
 
 
 state 21
 
-    (12) n -> PRED ( term ) .
+    (3) exp -> LAMBDA VAR . : type . exp
 
-    $end            reduce using rule 12 (n -> PRED ( term ) .)
-    )               reduce using rule 12 (n -> PRED ( term ) .)
-    ELSE            reduce using rule 12 (n -> PRED ( term ) .)
-    THEN            reduce using rule 12 (n -> PRED ( term ) .)
+    :               shift and go to state 27
 
 
 state 22
 
-    (9) type -> ( type . TO type )
-    (8) type -> type . TO type
+    (10) nat -> SUC ( exp . )
 
-    TO              shift and go to state 26
+    )               shift and go to state 28
 
 
 state 23
 
-    (5) term -> VAR : type . . term
-    (1) term -> . n
-    (2) term -> . BOOL
-    (3) term -> . VAR
-    (4) term -> . IF term THEN term ELSE term
-    (5) term -> . VAR : type . term
-    (10) n -> . NUM
-    (11) n -> . SUC ( term )
-    (12) n -> . PRED ( term )
+    (14) term -> ( exp ) .
 
-    BOOL            shift and go to state 5
-    VAR             shift and go to state 7
-    IF              shift and go to state 8
-    NUM             shift and go to state 4
-    SUC             shift and go to state 2
-    PRED            shift and go to state 6
+    VAR             reduce using rule 14 (term -> ( exp ) .)
+    (               reduce using rule 14 (term -> ( exp ) .)
+    NUM             reduce using rule 14 (term -> ( exp ) .)
+    SUC             reduce using rule 14 (term -> ( exp ) .)
+    PRED            reduce using rule 14 (term -> ( exp ) .)
+    BOOL            reduce using rule 14 (term -> ( exp ) .)
+    IS_ZERO         reduce using rule 14 (term -> ( exp ) .)
+    )               reduce using rule 14 (term -> ( exp ) .)
+    ELSE            reduce using rule 14 (term -> ( exp ) .)
+    $end            reduce using rule 14 (term -> ( exp ) .)
+    THEN            reduce using rule 14 (term -> ( exp ) .)
 
-    term                           shift and go to state 27
-    n                              shift and go to state 3
 
 state 24
 
-    (8) type -> type TO . type
-    (6) type -> . TBOOL
-    (7) type -> . TNAT
-    (8) type -> . type TO type
-    (9) type -> . ( type TO type )
+    (13) bool -> IS_ZERO ( exp . )
 
-    TBOOL           shift and go to state 17
-    TNAT            shift and go to state 16
-    (               shift and go to state 15
+    )               shift and go to state 29
 
-    type                           shift and go to state 28
 
 state 25
 
-    (4) term -> IF term THEN term . ELSE term
+    (11) nat -> PRED ( exp . )
 
-    ELSE            shift and go to state 29
+    )               shift and go to state 30
 
 
 state 26
 
-    (9) type -> ( type TO . type )
-    (8) type -> type TO . type
-    (6) type -> . TBOOL
-    (7) type -> . TNAT
-    (8) type -> . type TO type
-    (9) type -> . ( type TO type )
+    (2) exp -> IF exp THEN . exp ELSE exp
+    (1) exp -> . app
+    (2) exp -> . IF exp THEN exp ELSE exp
+    (3) exp -> . LAMBDA VAR : type . exp
+    (4) app -> . app term
+    (5) app -> . term
+    (6) term -> . nat
+    (7) term -> . bool
+    (8) term -> . VAR
+    (14) term -> . ( exp )
+    (9) nat -> . NUM
+    (10) nat -> . SUC ( exp )
+    (11) nat -> . PRED ( exp )
+    (12) bool -> . BOOL
+    (13) bool -> . IS_ZERO ( exp )
 
-    TBOOL           shift and go to state 17
-    TNAT            shift and go to state 16
-    (               shift and go to state 15
+    IF              shift and go to state 13
+    LAMBDA          shift and go to state 14
+    VAR             shift and go to state 11
+    (               shift and go to state 4
+    NUM             shift and go to state 7
+    SUC             shift and go to state 2
+    PRED            shift and go to state 10
+    BOOL            shift and go to state 12
+    IS_ZERO         shift and go to state 6
 
-    type                           shift and go to state 30
+    term                           shift and go to state 1
+    nat                            shift and go to state 3
+    app                            shift and go to state 5
+    bool                           shift and go to state 8
+    exp                            shift and go to state 31
 
 state 27
 
-    (5) term -> VAR : type . term .
+    (3) exp -> LAMBDA VAR : . type . exp
+    (15) type -> . atype
+    (16) type -> . atype TO type
+    (17) atype -> . TBOOL
+    (18) atype -> . TNAT
+    (19) atype -> . ( type )
 
-    THEN            reduce using rule 5 (term -> VAR : type . term .)
-    )               reduce using rule 5 (term -> VAR : type . term .)
-    $end            reduce using rule 5 (term -> VAR : type . term .)
-    ELSE            reduce using rule 5 (term -> VAR : type . term .)
+    TBOOL           shift and go to state 35
+    TNAT            shift and go to state 34
+    (               shift and go to state 32
 
+    atype                          shift and go to state 33
+    type                           shift and go to state 36
 
 state 28
 
-    (8) type -> type TO type .
-    (8) type -> type . TO type
+    (10) nat -> SUC ( exp ) .
 
-  ! shift/reduce conflict for TO resolved as shift
-    .               reduce using rule 8 (type -> type TO type .)
-    )               reduce using rule 8 (type -> type TO type .)
-    TO              shift and go to state 24
-
-  ! TO              [ reduce using rule 8 (type -> type TO type .) ]
+    VAR             reduce using rule 10 (nat -> SUC ( exp ) .)
+    (               reduce using rule 10 (nat -> SUC ( exp ) .)
+    NUM             reduce using rule 10 (nat -> SUC ( exp ) .)
+    SUC             reduce using rule 10 (nat -> SUC ( exp ) .)
+    PRED            reduce using rule 10 (nat -> SUC ( exp ) .)
+    BOOL            reduce using rule 10 (nat -> SUC ( exp ) .)
+    IS_ZERO         reduce using rule 10 (nat -> SUC ( exp ) .)
+    $end            reduce using rule 10 (nat -> SUC ( exp ) .)
+    )               reduce using rule 10 (nat -> SUC ( exp ) .)
+    THEN            reduce using rule 10 (nat -> SUC ( exp ) .)
+    ELSE            reduce using rule 10 (nat -> SUC ( exp ) .)
 
 
 state 29
 
-    (4) term -> IF term THEN term ELSE . term
-    (1) term -> . n
-    (2) term -> . BOOL
-    (3) term -> . VAR
-    (4) term -> . IF term THEN term ELSE term
-    (5) term -> . VAR : type . term
-    (10) n -> . NUM
-    (11) n -> . SUC ( term )
-    (12) n -> . PRED ( term )
+    (13) bool -> IS_ZERO ( exp ) .
 
-    BOOL            shift and go to state 5
-    VAR             shift and go to state 7
-    IF              shift and go to state 8
-    NUM             shift and go to state 4
-    SUC             shift and go to state 2
-    PRED            shift and go to state 6
+    VAR             reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
+    (               reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
+    NUM             reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
+    SUC             reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
+    PRED            reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
+    BOOL            reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
+    IS_ZERO         reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
+    ELSE            reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
+    $end            reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
+    )               reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
+    THEN            reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
 
-    term                           shift and go to state 31
-    n                              shift and go to state 3
 
 state 30
 
-    (9) type -> ( type TO type . )
-    (8) type -> type TO type .
-    (8) type -> type . TO type
+    (11) nat -> PRED ( exp ) .
 
-  ! shift/reduce conflict for TO resolved as shift
-    )               shift and go to state 32
-    TO              shift and go to state 24
-
-  ! TO              [ reduce using rule 8 (type -> type TO type .) ]
+    VAR             reduce using rule 11 (nat -> PRED ( exp ) .)
+    (               reduce using rule 11 (nat -> PRED ( exp ) .)
+    NUM             reduce using rule 11 (nat -> PRED ( exp ) .)
+    SUC             reduce using rule 11 (nat -> PRED ( exp ) .)
+    PRED            reduce using rule 11 (nat -> PRED ( exp ) .)
+    BOOL            reduce using rule 11 (nat -> PRED ( exp ) .)
+    IS_ZERO         reduce using rule 11 (nat -> PRED ( exp ) .)
+    $end            reduce using rule 11 (nat -> PRED ( exp ) .)
+    )               reduce using rule 11 (nat -> PRED ( exp ) .)
+    THEN            reduce using rule 11 (nat -> PRED ( exp ) .)
+    ELSE            reduce using rule 11 (nat -> PRED ( exp ) .)
 
 
 state 31
 
-    (4) term -> IF term THEN term ELSE term .
+    (2) exp -> IF exp THEN exp . ELSE exp
 
-    THEN            reduce using rule 4 (term -> IF term THEN term ELSE term .)
-    )               reduce using rule 4 (term -> IF term THEN term ELSE term .)
-    $end            reduce using rule 4 (term -> IF term THEN term ELSE term .)
-    ELSE            reduce using rule 4 (term -> IF term THEN term ELSE term .)
+    ELSE            shift and go to state 37
 
 
 state 32
 
-    (9) type -> ( type TO type ) .
+    (19) atype -> ( . type )
+    (15) type -> . atype
+    (16) type -> . atype TO type
+    (17) atype -> . TBOOL
+    (18) atype -> . TNAT
+    (19) atype -> . ( type )
 
-    TO              reduce using rule 9 (type -> ( type TO type ) .)
-    .               reduce using rule 9 (type -> ( type TO type ) .)
-    )               reduce using rule 9 (type -> ( type TO type ) .)
+    TBOOL           shift and go to state 35
+    TNAT            shift and go to state 34
+    (               shift and go to state 32
 
-WARNING: 
-WARNING: Conflicts:
-WARNING: 
-WARNING: shift/reduce conflict for TO in state 28 resolved as shift
-WARNING: shift/reduce conflict for TO in state 30 resolved as shift
+    atype                          shift and go to state 33
+    type                           shift and go to state 38
+
+state 33
+
+    (15) type -> atype .
+    (16) type -> atype . TO type
+
+    .               reduce using rule 15 (type -> atype .)
+    )               reduce using rule 15 (type -> atype .)
+    TO              shift and go to state 39
+
+
+state 34
+
+    (18) atype -> TNAT .
+
+    TO              reduce using rule 18 (atype -> TNAT .)
+    .               reduce using rule 18 (atype -> TNAT .)
+    )               reduce using rule 18 (atype -> TNAT .)
+
+
+state 35
+
+    (17) atype -> TBOOL .
+
+    TO              reduce using rule 17 (atype -> TBOOL .)
+    .               reduce using rule 17 (atype -> TBOOL .)
+    )               reduce using rule 17 (atype -> TBOOL .)
+
+
+state 36
+
+    (3) exp -> LAMBDA VAR : type . . exp
+
+    .               shift and go to state 40
+
+
+state 37
+
+    (2) exp -> IF exp THEN exp ELSE . exp
+    (1) exp -> . app
+    (2) exp -> . IF exp THEN exp ELSE exp
+    (3) exp -> . LAMBDA VAR : type . exp
+    (4) app -> . app term
+    (5) app -> . term
+    (6) term -> . nat
+    (7) term -> . bool
+    (8) term -> . VAR
+    (14) term -> . ( exp )
+    (9) nat -> . NUM
+    (10) nat -> . SUC ( exp )
+    (11) nat -> . PRED ( exp )
+    (12) bool -> . BOOL
+    (13) bool -> . IS_ZERO ( exp )
+
+    IF              shift and go to state 13
+    LAMBDA          shift and go to state 14
+    VAR             shift and go to state 11
+    (               shift and go to state 4
+    NUM             shift and go to state 7
+    SUC             shift and go to state 2
+    PRED            shift and go to state 10
+    BOOL            shift and go to state 12
+    IS_ZERO         shift and go to state 6
+
+    term                           shift and go to state 1
+    nat                            shift and go to state 3
+    app                            shift and go to state 5
+    bool                           shift and go to state 8
+    exp                            shift and go to state 41
+
+state 38
+
+    (19) atype -> ( type . )
+
+    )               shift and go to state 42
+
+
+state 39
+
+    (16) type -> atype TO . type
+    (15) type -> . atype
+    (16) type -> . atype TO type
+    (17) atype -> . TBOOL
+    (18) atype -> . TNAT
+    (19) atype -> . ( type )
+
+    TBOOL           shift and go to state 35
+    TNAT            shift and go to state 34
+    (               shift and go to state 32
+
+    type                           shift and go to state 43
+    atype                          shift and go to state 33
+
+state 40
+
+    (3) exp -> LAMBDA VAR : type . . exp
+    (1) exp -> . app
+    (2) exp -> . IF exp THEN exp ELSE exp
+    (3) exp -> . LAMBDA VAR : type . exp
+    (4) app -> . app term
+    (5) app -> . term
+    (6) term -> . nat
+    (7) term -> . bool
+    (8) term -> . VAR
+    (14) term -> . ( exp )
+    (9) nat -> . NUM
+    (10) nat -> . SUC ( exp )
+    (11) nat -> . PRED ( exp )
+    (12) bool -> . BOOL
+    (13) bool -> . IS_ZERO ( exp )
+
+    IF              shift and go to state 13
+    LAMBDA          shift and go to state 14
+    VAR             shift and go to state 11
+    (               shift and go to state 4
+    NUM             shift and go to state 7
+    SUC             shift and go to state 2
+    PRED            shift and go to state 10
+    BOOL            shift and go to state 12
+    IS_ZERO         shift and go to state 6
+
+    term                           shift and go to state 1
+    nat                            shift and go to state 3
+    app                            shift and go to state 5
+    bool                           shift and go to state 8
+    exp                            shift and go to state 44
+
+state 41
+
+    (2) exp -> IF exp THEN exp ELSE exp .
+
+    ELSE            reduce using rule 2 (exp -> IF exp THEN exp ELSE exp .)
+    )               reduce using rule 2 (exp -> IF exp THEN exp ELSE exp .)
+    $end            reduce using rule 2 (exp -> IF exp THEN exp ELSE exp .)
+    THEN            reduce using rule 2 (exp -> IF exp THEN exp ELSE exp .)
+
+
+state 42
+
+    (19) atype -> ( type ) .
+
+    TO              reduce using rule 19 (atype -> ( type ) .)
+    .               reduce using rule 19 (atype -> ( type ) .)
+    )               reduce using rule 19 (atype -> ( type ) .)
+
+
+state 43
+
+    (16) type -> atype TO type .
+
+    .               reduce using rule 16 (type -> atype TO type .)
+    )               reduce using rule 16 (type -> atype TO type .)
+
+
+state 44
+
+    (3) exp -> LAMBDA VAR : type . exp .
+
+    ELSE            reduce using rule 3 (exp -> LAMBDA VAR : type . exp .)
+    )               reduce using rule 3 (exp -> LAMBDA VAR : type . exp .)
+    $end            reduce using rule 3 (exp -> LAMBDA VAR : type . exp .)
+    THEN            reduce using rule 3 (exp -> LAMBDA VAR : type . exp .)
+
