@@ -16,7 +16,12 @@ class Nat(Expression):
     self._value = n
 
   def __repr__(self):
-    return str(self._value)
+    start = ''
+    end = ''
+    for x in xrange(0,self._value):
+      start += 'suc('
+      end += ')'
+    return start + str(0) + end
 
   def value(self):
     return self
@@ -58,6 +63,87 @@ class Bool(Expression):
     else:
       return False
 
+class Suc(Expression):
+  def __init__(self, exp):
+    self._exp = exp
+
+  def __repr__(self):
+    return 'succ(' + str(self._exp) + ')'
+
+  def value(self):
+    if (not (self._exp.type().typesArray() == ['Nat'])):
+      print ('ERROR succ espera un valor de tipo Nat')
+      # traceback.print_stack()
+      exit()
+    return self._exp.value().suc()
+
+  def type(self):
+    if (not (self._exp.type().typesArray() == ['Nat'])):
+      print ('ERROR succ espera un valor de tipo Nat')
+      # traceback.print_stack()
+      exit()
+    return Type(['Nat'])
+
+  def bindValue(self, varName, value):
+    self._exp = self._exp.bindValue(varName, value)
+    return self
+
+  def bindType(self, varName, valueType):
+    self._exp = self._exp.bindType(varName, valueType)
+    return self
+
+class Pred(Expression):
+  def __init__(self, exp):
+    self._exp = exp
+
+  def __repr__(self):
+    return 'pred(' + str(self._exp) + ')'
+
+  def value(self):
+    if (not (self._exp.type().typesArray() == ['Nat'])):
+      print ('ERROR pred espera un valor de tipo Nat')
+      # traceback.print_stack()
+      exit()
+    return self._exp.value().pred()
+
+  def type(self):
+    if (not (self._exp.type().typesArray() == ['Nat'])):
+      print ('ERROR pred espera un valor de tipo Nat')
+      # traceback.print_stack()
+      exit()
+    return Type(['Nat'])
+
+  def bindValue(self, varName, value):
+    self._exp = self._exp.bindValue(varName, value)
+    return self
+
+  def bindType(self, varName, valueType):
+    self._exp = self._exp.bindType(varName, valueType)
+    return self
+
+class isZero(Expression):
+  def __init__(self, exp):
+    self._exp = exp
+
+  def value(self):
+    return Nat(self._exp.value()).isZero()
+
+  def type(self):
+    if (self._exp.type().typesArray() == ['Nat']):
+      return Type(['Bool'])
+    else:
+      print ('ERROR isZero(x) x debe ser de tipo Nat')
+      # traceback.print_stack()
+      exit()
+
+  def bindValue(self, varName, value):
+    self._exp = self._exp.bindValue(varName, value)
+    return self
+
+  def bindType(self, varName, valueType):
+    self._exp = self._exp.bindType(varName, valueType)
+    return self
+
 class IfThenElse(Expression):
   def __init__(self, cond, ifTrue, ifFalse):
     self._cond = cond
@@ -70,11 +156,11 @@ class IfThenElse(Expression):
   def value(self):
     if (not (self._ifTrue.type() == self._ifFalse.type())):
       print 'ERROR: Las dos opciones del if deben tener el mismo tipo'
-      traceback.print_stack()
+      # traceback.print_stack()
       exit()
     if (not (self._cond.type().typesArray() == ['Bool'])):
       print 'ERROR: La condicion del if debe ser de tipo Bool'
-      traceback.print_stack()
+      # traceback.print_stack()
       exit()
     if (self._cond.value().isTrue()):
       return self._ifTrue.value()
@@ -84,11 +170,11 @@ class IfThenElse(Expression):
   def type(self):
     if (not (self._ifTrue.type() == self._ifFalse.type())):
       print 'ERROR: Las dos opciones del if deben tener el mismo tipo'
-      traceback.print_stack()
+      # traceback.print_stack()
       exit()
     if (not (self._cond.type().typesArray() == ['Bool'])):
       print 'ERROR: La condicion del if debe ser de tipo Bool'
-      traceback.print_stack()
+      # traceback.print_stack()
       exit()
     return self._ifTrue.type()
 
@@ -118,7 +204,7 @@ class Var(Expression):
       return self._value.value()
     else:
       print('ERROR: El término no es cerrado (' + self._name + ' está libre))')
-      traceback.print_stack()
+      # traceback.print_stack()
       exit()
 
   def type(self):
@@ -126,7 +212,7 @@ class Var(Expression):
       return self._type
     else:
       print('ERROR: El término no es cerrado (' + self._name + ' está libre))')
-      traceback.print_stack()
+      # traceback.print_stack()
       exit()
 
   def bindValue(self, varName, value):
@@ -143,7 +229,7 @@ class Var(Expression):
 class Abstraction(Expression):
   def __init__(self, varname, vartype, body):
     self._var = varname
-    self._type = Type([str(vartype)])
+    self._type = vartype
     self._body = body
     self._body.bindType(varname, self._type)
 
@@ -177,24 +263,29 @@ class Abstraction(Expression):
     self._body = self._body.bindType(varName, valueType)
     return self
 
-class Application:
+class Application(Expression):
   def __init__(self, absTerm, paramTerm):
     self._absTerm = absTerm
     self._paramTerm = paramTerm
 
+  def __repr__(self):
+    return str(self._absTerm) + ' ' + str(self._paramTerm)
+
   def value(self):
-    if (isinstance(self._absTerm, Abstraction) and self._paramTerm.type() == self._absTerm.paramType()):
-      return self._absTerm.apply(self._paramTerm)
+
+    absTermValue = self._absTerm.value()
+    paramTermValue = self._paramTerm
+
+    if (isinstance(absTermValue, Abstraction) and
+      paramTermValue.type() == absTermValue.paramType()):
+      return absTermValue.apply(paramTermValue)
     else:
       print 'ERROR: La parte izquierda de la aplicación (' + str(self._absTerm.value()) + ') no es una función con dominio en ' + str(self._paramTerm.type())
-      traceback.print_stack()
+      # traceback.print_stack()
       exit()
 
   def type(self):
     return self._absTerm.type().applyType(self._paramTerm.type())
-
-# Problema: no esta definido el body del absTerm, pero queremos saber el tipo de la aplicacion
-# Tenemos en el contexto el tipo de la abstraccion y el tipo del parametro y hay que calcular el tipo de la app
 
   def bindValue(self, varName, value):
     self._absTerm = self._absTerm.bindValue(varName, value)
@@ -206,120 +297,54 @@ class Application:
     self._paramTerm = self._paramTerm.bindType(varName, valueType)
     return self
 
-class Suc(Expression):
-  def __init__(self, exp):
-    self._exp = exp
-
-  def __repr__(self):
-    return 'succ(' + str(self._exp) + ')'
-
-  def value(self):
-    if (not (self._exp.type().typesArray() == ['Nat'])):
-      print ('ERROR succ espera un valor de tipo Nat')
-      traceback.print_stack()
-      exit()
-    return self._exp.value().suc()
-
-  def type(self):
-    if (not (self._exp.type().typesArray() == ['Nat'])):
-      print ('ERROR succ espera un valor de tipo Nat')
-      traceback.print_stack()
-      exit()
-    return Type(['Nat'])
-
-  def bindValue(self, varName, value):
-    self._exp = self._exp.bindValue(varName, value)
-    return self
-
-  def bindType(self, varName, valueType):
-    self._exp = self._exp.bindType(varName, valueType)
-    return self
-
-class Pred(Expression):
-  def __init__(self, exp):
-    self._exp = exp
-
-  def __repr__(self):
-    return 'pred(' + str(self._exp) + ')'
-
-  def value(self):
-    if (not (self._exp.type().typesArray() == ['Nat'])):
-      print ('ERROR pred espera un valor de tipo Nat')
-      traceback.print_stack()
-      exit()
-    return self._exp.value().pred()
-
-  def type(self):
-    if (not (self._exp.type().typesArray() == ['Nat'])):
-      print ('ERROR pred espera un valor de tipo Nat')
-      traceback.print_stack()
-      exit()
-    return Type(['Nat'])
-
-  def bindValue(self, varName, value):
-    self._exp = self._exp.bindValue(varName, value)
-    return self
-
-  def bindType(self, varName, valueType):
-    self._exp = self._exp.bindType(varName, valueType)
-    return self
-
-class isZero(Expression):
-  def __init__(self, exp):
-    self._exp = exp
-
-  def value(self):
-    return Nat(self._exp.value()).isZero()
-
-  def type(self):
-    if (self._exp.type().typesArray() == ['Nat']):
-      return Type(['Bool'])
-    else:
-      print ('ERROR isZero(x) x debe ser de tipo Nat')
-      traceback.print_stack()
-      exit()
-
-  def bindValue(self, varName, value):
-    self._exp = self._exp.bindValue(varName, value)
-    return self
-
-  def bindType(self, varName, valueType):
-    self._exp = self._exp.bindType(varName, valueType)
-    return self
-
 class Type:
   def __init__(self, typesArray):
     self._typesArray = []
     for aType in typesArray:
       if (isinstance(aType, list) and len(aType) == 1):
-        aType = aType.pop(0)
+        aType = aType[0]
       self._typesArray.append(aType)
 
   def __repr__(self):
     if (len(self.typesArray()) > 1):
-      return "->".join(map(str, self._typesArray))
+      return "->".join(map(lambda x: str(Type([x])), self._typesArray))
     else:
-      return str(self.typesArray().pop(0))
+      elem = self.typesArray()[0]
+      if (isinstance(elem, list)):
+        return '(' + str(Type(elem)) + ')'
+      else:
+        return str(elem)
 
   def __eq__(self, other):
     if isinstance(other, self.__class__):
-      return self._typesArray == other._typesArray
+      if (len(self._typesArray) == 1 and isinstance(self._typesArray[0], list)):
+        myType = self._typesArray[0]
+      else:
+        myType = self._typesArray
+      if (len(other._typesArray) == 1 and isinstance(other._typesArray[0], list)):
+        otherType = other._typesArray[0]
+      else:
+        otherType = other._typesArray
+      return myType == otherType
     return False
 
   def typesArray(self):
     return self._typesArray
 
   def applyType(self, paramType):
-    if (len(self.typesArray()) <= len(paramType.typesArray())):
-      print ('ERROR no se puede aplicar para estos parametros')
-      traceback.print_stack()
-      exit()
-    for otherType in paramType.typesArray():
-      myType = self._typesArray.pop(0)
+    if (len(self.typesArray()) == 1):
+      absType = self.typesArray()[0]
+    else:
+      absType = self.typesArray()
+
+    if (absType[0] == paramType.typesArray()):
+      return Type(absType[1:len(absType)])
+
+    for i in xrange(0,len(paramType.typesArray())-1):
+      myType = absType[i]
+      otherType = paramType.typesArray()[i]
       if (myType != otherType):
         print ('ERROR no se puede aplicar para estos parametros')
-        traceback.print_stack()
+        # traceback.print_stack()
         exit()
-    return self._typesArray
-
-# TODO Corregir clase Type
+    return Type(absType[len(paramType.typesArray()):len(absType)])

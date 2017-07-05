@@ -1,15 +1,7 @@
-"""Parser LR(1) de lambdaCalc."""
+"""Parser LALR de lambdaCalc."""
 import ply.yacc as yacc
 from .lexer import tokens
 from classes import *
-
-# precedence = [
-#   #(tipoDeAsociatividad, ordenDePrecedencia)
-#   ('left', 'MINUS'),
-#   ('left', 'PLUS'),
-#   ('left', 'TIMES'),
-#   ('right', 'UMINUS'),
-# ]
 
 def p_exp_app(p):
   '''exp : app '''
@@ -37,8 +29,8 @@ def p_term_base(p):
           | VAR '''
   p[0] = p[1]
 
-def p_nat_num(p):
-  '''nat : NUM'''
+def p_nat_zero(p):
+  '''nat : ZERO'''
   p[0] = p[1]
 
 def p_nat_suc(p):
@@ -67,7 +59,7 @@ def p_type_atype(p):
 
 def p_type_to(p):
   '''type : atype TO type '''
-  p[0] = Type([p[1],p[3]])
+  p[0] = Type([p[1].typesArray() + p[3].typesArray()])
 
 def p_atype_base(p):
   '''atype : TBOOL
@@ -76,7 +68,7 @@ def p_atype_base(p):
 
 def p_atype_type(p):
   '''atype : '(' type ')' '''
-  p[0] = '(' + p[2] + ')'
+  p[0] = Type([p[2].typesArray()])
 
 def p_error(p):
     print("Syntax Error")

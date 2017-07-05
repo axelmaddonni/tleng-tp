@@ -2,23 +2,6 @@
 import ply.lex as lex
 from classes import *
 
-"""
-Lista de tokens
-
-El analizador léxico de PLY (al llamar al método lex.lex()) va a buscar
-para cada uno de estos tokens una variable "t_TOKEN" en el módulo actual.
-
-Sí, es súper nigromántico pero es lo que hay.
-
-t_TOKEN puede ser:
-
-- Una expresión regular
-- Una función cuyo docstring sea una expresión regular (bizarro).
-
-En el segundo caso, podemos hacer algunas cosas "extras", como se
-muestra aquí abajo.
-
-"""
 ### Definimos tokens literales ###
 literals = ['(', ')', ':', '.']
 
@@ -30,7 +13,7 @@ tokens = [
   'TO',
   'BOOL',
   'VAR',
-  'NUM',
+  'ZERO',
   'SUC',
   'PRED',
   'IS_ZERO',
@@ -39,12 +22,11 @@ tokens = [
   'LAMBDA'
 ]
 
-t_ignore = ' ' # No estoy seguro de que a futuro podamos seguir ignorando espacios
+t_ignore = ' '
 
-### Definimos las regex que matchean para cada token. Notar que el orden en que están definidas importa, de lo contrario VAR se comería suc, pred, etc ###
-def t_NUM(t):
-  r'\d+'
-  t.value = Nat(int(t.value))
+def t_ZERO(t):
+  r'0'
+  t.value = Nat(0)
   return t
 
 def t_SUC(t):

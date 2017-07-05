@@ -11,7 +11,7 @@ Rule 5     app -> term
 Rule 6     term -> nat
 Rule 7     term -> bool
 Rule 8     term -> VAR
-Rule 9     nat -> NUM
+Rule 9     nat -> ZERO
 Rule 10    nat -> SUC ( exp )
 Rule 11    nat -> PRED ( exp )
 Rule 12    bool -> BOOL
@@ -34,7 +34,6 @@ ELSE                 : 2
 IF                   : 2
 IS_ZERO              : 13
 LAMBDA               : 3
-NUM                  : 9
 PRED                 : 11
 SUC                  : 10
 TBOOL                : 17
@@ -42,6 +41,7 @@ THEN                 : 2
 TNAT                 : 18
 TO                   : 16
 VAR                  : 3 8
+ZERO                 : 9
 error                : 
 
 Nonterminals, with rules where they appear
@@ -68,7 +68,7 @@ state 0
     (7) term -> . bool
     (8) term -> . VAR
     (14) term -> . ( exp )
-    (9) nat -> . NUM
+    (9) nat -> . ZERO
     (10) nat -> . SUC ( exp )
     (11) nat -> . PRED ( exp )
     (12) bool -> . BOOL
@@ -78,7 +78,7 @@ state 0
     LAMBDA          shift and go to state 14
     VAR             shift and go to state 11
     (               shift and go to state 4
-    NUM             shift and go to state 7
+    ZERO            shift and go to state 7
     SUC             shift and go to state 2
     PRED            shift and go to state 10
     BOOL            shift and go to state 12
@@ -96,7 +96,7 @@ state 1
 
     VAR             reduce using rule 5 (app -> term .)
     (               reduce using rule 5 (app -> term .)
-    NUM             reduce using rule 5 (app -> term .)
+    ZERO            reduce using rule 5 (app -> term .)
     SUC             reduce using rule 5 (app -> term .)
     PRED            reduce using rule 5 (app -> term .)
     BOOL            reduce using rule 5 (app -> term .)
@@ -120,7 +120,7 @@ state 3
 
     VAR             reduce using rule 6 (term -> nat .)
     (               reduce using rule 6 (term -> nat .)
-    NUM             reduce using rule 6 (term -> nat .)
+    ZERO            reduce using rule 6 (term -> nat .)
     SUC             reduce using rule 6 (term -> nat .)
     PRED            reduce using rule 6 (term -> nat .)
     BOOL            reduce using rule 6 (term -> nat .)
@@ -143,7 +143,7 @@ state 4
     (7) term -> . bool
     (8) term -> . VAR
     (14) term -> . ( exp )
-    (9) nat -> . NUM
+    (9) nat -> . ZERO
     (10) nat -> . SUC ( exp )
     (11) nat -> . PRED ( exp )
     (12) bool -> . BOOL
@@ -153,7 +153,7 @@ state 4
     LAMBDA          shift and go to state 14
     VAR             shift and go to state 11
     (               shift and go to state 4
-    NUM             shift and go to state 7
+    ZERO            shift and go to state 7
     SUC             shift and go to state 2
     PRED            shift and go to state 10
     BOOL            shift and go to state 12
@@ -173,7 +173,7 @@ state 5
     (7) term -> . bool
     (8) term -> . VAR
     (14) term -> . ( exp )
-    (9) nat -> . NUM
+    (9) nat -> . ZERO
     (10) nat -> . SUC ( exp )
     (11) nat -> . PRED ( exp )
     (12) bool -> . BOOL
@@ -185,7 +185,7 @@ state 5
     THEN            reduce using rule 1 (exp -> app .)
     VAR             shift and go to state 11
     (               shift and go to state 4
-    NUM             shift and go to state 7
+    ZERO            shift and go to state 7
     SUC             shift and go to state 2
     PRED            shift and go to state 10
     BOOL            shift and go to state 12
@@ -204,19 +204,19 @@ state 6
 
 state 7
 
-    (9) nat -> NUM .
+    (9) nat -> ZERO .
 
-    VAR             reduce using rule 9 (nat -> NUM .)
-    (               reduce using rule 9 (nat -> NUM .)
-    NUM             reduce using rule 9 (nat -> NUM .)
-    SUC             reduce using rule 9 (nat -> NUM .)
-    PRED            reduce using rule 9 (nat -> NUM .)
-    BOOL            reduce using rule 9 (nat -> NUM .)
-    IS_ZERO         reduce using rule 9 (nat -> NUM .)
-    $end            reduce using rule 9 (nat -> NUM .)
-    )               reduce using rule 9 (nat -> NUM .)
-    THEN            reduce using rule 9 (nat -> NUM .)
-    ELSE            reduce using rule 9 (nat -> NUM .)
+    VAR             reduce using rule 9 (nat -> ZERO .)
+    (               reduce using rule 9 (nat -> ZERO .)
+    ZERO            reduce using rule 9 (nat -> ZERO .)
+    SUC             reduce using rule 9 (nat -> ZERO .)
+    PRED            reduce using rule 9 (nat -> ZERO .)
+    BOOL            reduce using rule 9 (nat -> ZERO .)
+    IS_ZERO         reduce using rule 9 (nat -> ZERO .)
+    $end            reduce using rule 9 (nat -> ZERO .)
+    )               reduce using rule 9 (nat -> ZERO .)
+    THEN            reduce using rule 9 (nat -> ZERO .)
+    ELSE            reduce using rule 9 (nat -> ZERO .)
 
 
 state 8
@@ -225,7 +225,7 @@ state 8
 
     VAR             reduce using rule 7 (term -> bool .)
     (               reduce using rule 7 (term -> bool .)
-    NUM             reduce using rule 7 (term -> bool .)
+    ZERO            reduce using rule 7 (term -> bool .)
     SUC             reduce using rule 7 (term -> bool .)
     PRED            reduce using rule 7 (term -> bool .)
     BOOL            reduce using rule 7 (term -> bool .)
@@ -255,7 +255,7 @@ state 11
 
     VAR             reduce using rule 8 (term -> VAR .)
     (               reduce using rule 8 (term -> VAR .)
-    NUM             reduce using rule 8 (term -> VAR .)
+    ZERO            reduce using rule 8 (term -> VAR .)
     SUC             reduce using rule 8 (term -> VAR .)
     PRED            reduce using rule 8 (term -> VAR .)
     BOOL            reduce using rule 8 (term -> VAR .)
@@ -272,7 +272,7 @@ state 12
 
     VAR             reduce using rule 12 (bool -> BOOL .)
     (               reduce using rule 12 (bool -> BOOL .)
-    NUM             reduce using rule 12 (bool -> BOOL .)
+    ZERO            reduce using rule 12 (bool -> BOOL .)
     SUC             reduce using rule 12 (bool -> BOOL .)
     PRED            reduce using rule 12 (bool -> BOOL .)
     BOOL            reduce using rule 12 (bool -> BOOL .)
@@ -295,7 +295,7 @@ state 13
     (7) term -> . bool
     (8) term -> . VAR
     (14) term -> . ( exp )
-    (9) nat -> . NUM
+    (9) nat -> . ZERO
     (10) nat -> . SUC ( exp )
     (11) nat -> . PRED ( exp )
     (12) bool -> . BOOL
@@ -305,7 +305,7 @@ state 13
     LAMBDA          shift and go to state 14
     VAR             shift and go to state 11
     (               shift and go to state 4
-    NUM             shift and go to state 7
+    ZERO            shift and go to state 7
     SUC             shift and go to state 2
     PRED            shift and go to state 10
     BOOL            shift and go to state 12
@@ -336,7 +336,7 @@ state 15
     (7) term -> . bool
     (8) term -> . VAR
     (14) term -> . ( exp )
-    (9) nat -> . NUM
+    (9) nat -> . ZERO
     (10) nat -> . SUC ( exp )
     (11) nat -> . PRED ( exp )
     (12) bool -> . BOOL
@@ -346,7 +346,7 @@ state 15
     LAMBDA          shift and go to state 14
     VAR             shift and go to state 11
     (               shift and go to state 4
-    NUM             shift and go to state 7
+    ZERO            shift and go to state 7
     SUC             shift and go to state 2
     PRED            shift and go to state 10
     BOOL            shift and go to state 12
@@ -371,7 +371,7 @@ state 17
 
     VAR             reduce using rule 4 (app -> app term .)
     (               reduce using rule 4 (app -> app term .)
-    NUM             reduce using rule 4 (app -> app term .)
+    ZERO            reduce using rule 4 (app -> app term .)
     SUC             reduce using rule 4 (app -> app term .)
     PRED            reduce using rule 4 (app -> app term .)
     BOOL            reduce using rule 4 (app -> app term .)
@@ -394,7 +394,7 @@ state 18
     (7) term -> . bool
     (8) term -> . VAR
     (14) term -> . ( exp )
-    (9) nat -> . NUM
+    (9) nat -> . ZERO
     (10) nat -> . SUC ( exp )
     (11) nat -> . PRED ( exp )
     (12) bool -> . BOOL
@@ -404,7 +404,7 @@ state 18
     LAMBDA          shift and go to state 14
     VAR             shift and go to state 11
     (               shift and go to state 4
-    NUM             shift and go to state 7
+    ZERO            shift and go to state 7
     SUC             shift and go to state 2
     PRED            shift and go to state 10
     BOOL            shift and go to state 12
@@ -428,7 +428,7 @@ state 19
     (7) term -> . bool
     (8) term -> . VAR
     (14) term -> . ( exp )
-    (9) nat -> . NUM
+    (9) nat -> . ZERO
     (10) nat -> . SUC ( exp )
     (11) nat -> . PRED ( exp )
     (12) bool -> . BOOL
@@ -438,7 +438,7 @@ state 19
     LAMBDA          shift and go to state 14
     VAR             shift and go to state 11
     (               shift and go to state 4
-    NUM             shift and go to state 7
+    ZERO            shift and go to state 7
     SUC             shift and go to state 2
     PRED            shift and go to state 10
     BOOL            shift and go to state 12
@@ -477,7 +477,7 @@ state 23
 
     VAR             reduce using rule 14 (term -> ( exp ) .)
     (               reduce using rule 14 (term -> ( exp ) .)
-    NUM             reduce using rule 14 (term -> ( exp ) .)
+    ZERO            reduce using rule 14 (term -> ( exp ) .)
     SUC             reduce using rule 14 (term -> ( exp ) .)
     PRED            reduce using rule 14 (term -> ( exp ) .)
     BOOL            reduce using rule 14 (term -> ( exp ) .)
@@ -514,7 +514,7 @@ state 26
     (7) term -> . bool
     (8) term -> . VAR
     (14) term -> . ( exp )
-    (9) nat -> . NUM
+    (9) nat -> . ZERO
     (10) nat -> . SUC ( exp )
     (11) nat -> . PRED ( exp )
     (12) bool -> . BOOL
@@ -524,7 +524,7 @@ state 26
     LAMBDA          shift and go to state 14
     VAR             shift and go to state 11
     (               shift and go to state 4
-    NUM             shift and go to state 7
+    ZERO            shift and go to state 7
     SUC             shift and go to state 2
     PRED            shift and go to state 10
     BOOL            shift and go to state 12
@@ -558,7 +558,7 @@ state 28
 
     VAR             reduce using rule 10 (nat -> SUC ( exp ) .)
     (               reduce using rule 10 (nat -> SUC ( exp ) .)
-    NUM             reduce using rule 10 (nat -> SUC ( exp ) .)
+    ZERO            reduce using rule 10 (nat -> SUC ( exp ) .)
     SUC             reduce using rule 10 (nat -> SUC ( exp ) .)
     PRED            reduce using rule 10 (nat -> SUC ( exp ) .)
     BOOL            reduce using rule 10 (nat -> SUC ( exp ) .)
@@ -575,7 +575,7 @@ state 29
 
     VAR             reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
     (               reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
-    NUM             reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
+    ZERO            reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
     SUC             reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
     PRED            reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
     BOOL            reduce using rule 13 (bool -> IS_ZERO ( exp ) .)
@@ -592,7 +592,7 @@ state 30
 
     VAR             reduce using rule 11 (nat -> PRED ( exp ) .)
     (               reduce using rule 11 (nat -> PRED ( exp ) .)
-    NUM             reduce using rule 11 (nat -> PRED ( exp ) .)
+    ZERO            reduce using rule 11 (nat -> PRED ( exp ) .)
     SUC             reduce using rule 11 (nat -> PRED ( exp ) .)
     PRED            reduce using rule 11 (nat -> PRED ( exp ) .)
     BOOL            reduce using rule 11 (nat -> PRED ( exp ) .)
@@ -673,7 +673,7 @@ state 37
     (7) term -> . bool
     (8) term -> . VAR
     (14) term -> . ( exp )
-    (9) nat -> . NUM
+    (9) nat -> . ZERO
     (10) nat -> . SUC ( exp )
     (11) nat -> . PRED ( exp )
     (12) bool -> . BOOL
@@ -683,7 +683,7 @@ state 37
     LAMBDA          shift and go to state 14
     VAR             shift and go to state 11
     (               shift and go to state 4
-    NUM             shift and go to state 7
+    ZERO            shift and go to state 7
     SUC             shift and go to state 2
     PRED            shift and go to state 10
     BOOL            shift and go to state 12
@@ -730,7 +730,7 @@ state 40
     (7) term -> . bool
     (8) term -> . VAR
     (14) term -> . ( exp )
-    (9) nat -> . NUM
+    (9) nat -> . ZERO
     (10) nat -> . SUC ( exp )
     (11) nat -> . PRED ( exp )
     (12) bool -> . BOOL
@@ -740,7 +740,7 @@ state 40
     LAMBDA          shift and go to state 14
     VAR             shift and go to state 11
     (               shift and go to state 4
-    NUM             shift and go to state 7
+    ZERO            shift and go to state 7
     SUC             shift and go to state 2
     PRED            shift and go to state 10
     BOOL            shift and go to state 12
