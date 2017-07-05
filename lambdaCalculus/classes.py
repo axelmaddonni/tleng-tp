@@ -1,6 +1,7 @@
 #! coding: utf-8
 
 import traceback
+import sys
 
 ### Definimos las clases para los tipos de términos ###
 
@@ -72,16 +73,16 @@ class Suc(Expression):
 
   def value(self):
     if (not (self._exp.type().typesArray() == ['Nat'])):
-      print ('ERROR succ espera un valor de tipo Nat')
+      sys.stderr.write('ERROR succ espera un valor de tipo Nat')
       # traceback.print_stack()
-      exit()
+      sys.exit(1)
     return self._exp.value().suc()
 
   def type(self):
     if (not (self._exp.type().typesArray() == ['Nat'])):
-      print ('ERROR succ espera un valor de tipo Nat')
+      sys.stderr.write('ERROR succ espera un valor de tipo Nat')
       # traceback.print_stack()
-      exit()
+      sys.exit(1)
     return Type(['Nat'])
 
   def bindValue(self, varName, value):
@@ -101,16 +102,16 @@ class Pred(Expression):
 
   def value(self):
     if (not (self._exp.type().typesArray() == ['Nat'])):
-      print ('ERROR pred espera un valor de tipo Nat')
+      sys.stderr.write('ERROR pred espera un valor de tipo Nat')
       # traceback.print_stack()
-      exit()
+      sys.exit(1)
     return self._exp.value().pred()
 
   def type(self):
     if (not (self._exp.type().typesArray() == ['Nat'])):
-      print ('ERROR pred espera un valor de tipo Nat')
+      sys.stderr.write('ERROR pred espera un valor de tipo Nat')
       # traceback.print_stack()
-      exit()
+      sys.exit(1)
     return Type(['Nat'])
 
   def bindValue(self, varName, value):
@@ -132,9 +133,9 @@ class isZero(Expression):
     if (self._exp.type().typesArray() == ['Nat']):
       return Type(['Bool'])
     else:
-      print ('ERROR isZero(x) x debe ser de tipo Nat')
+      sys.stderr.write('ERROR isZero(x) x debe ser de tipo Nat')
       # traceback.print_stack()
-      exit()
+      sys.exit(1)
 
   def bindValue(self, varName, value):
     self._exp = self._exp.bindValue(varName, value)
@@ -155,13 +156,13 @@ class IfThenElse(Expression):
 
   def value(self):
     if (not (self._ifTrue.type() == self._ifFalse.type())):
-      print 'ERROR: Las dos opciones del if deben tener el mismo tipo'
+      sys.stderr.write('ERROR: Las dos opciones del if deben tener el mismo tipo')
       # traceback.print_stack()
-      exit()
+      sys.exit(1)
     if (not (self._cond.type().typesArray() == ['Bool'])):
-      print 'ERROR: La condicion del if debe ser de tipo Bool'
+      sys.stderr.write('ERROR: La condicion del if debe ser de tipo Bool')
       # traceback.print_stack()
-      exit()
+      sys.exit(1)
     if (self._cond.value().isTrue()):
       return self._ifTrue.value()
     else:
@@ -169,13 +170,13 @@ class IfThenElse(Expression):
 
   def type(self):
     if (not (self._ifTrue.type() == self._ifFalse.type())):
-      print 'ERROR: Las dos opciones del if deben tener el mismo tipo'
+      sys.stderr.write('ERROR: Las dos opciones del if deben tener el mismo tipo')
       # traceback.print_stack()
-      exit()
+      sys.exit(1)
     if (not (self._cond.type().typesArray() == ['Bool'])):
-      print 'ERROR: La condicion del if debe ser de tipo Bool'
+      sys.stderr.write('ERROR: La condicion del if debe ser de tipo Bool')
       # traceback.print_stack()
-      exit()
+      sys.exit(1)
     return self._ifTrue.type()
 
   def bindValue(self, varName, value):
@@ -203,17 +204,17 @@ class Var(Expression):
     if self._value is not None:
       return self._value.value()
     else:
-      print('ERROR: El término no es cerrado (' + self._name + ' está libre))')
+      sys.stderr.write('ERROR: El término no es cerrado (' + self._name + ' está libre))')
       # traceback.print_stack()
-      exit()
+      sys.exit(1)
 
   def type(self):
     if self._type is not None:
       return self._type
     else:
-      print('ERROR: El término no es cerrado (' + self._name + ' está libre))')
+      sys.stderr.write('ERROR: El término no es cerrado (' + self._name + ' está libre))')
       # traceback.print_stack()
-      exit()
+      sys.exit(1)
 
   def bindValue(self, varName, value):
     if (str(self._name) == str(varName)):
@@ -280,9 +281,9 @@ class Application(Expression):
       paramTermValue.type() == absTermValue.paramType()):
       return absTermValue.apply(paramTermValue)
     else:
-      print 'ERROR: La parte izquierda de la aplicación (' + str(self._absTerm.value()) + ') no es una función con dominio en ' + str(self._paramTerm.type())
+      sys.stderr.write('ERROR: La parte izquierda de la aplicación (' + str(self._absTerm.value()) + ') no es una función con dominio en ' + str(self._paramTerm.type()))
       # traceback.print_stack()
-      exit()
+      sys.exit(1)
 
   def type(self):
     return self._absTerm.type().applyType(self._paramTerm.type())
@@ -344,7 +345,7 @@ class Type:
       myType = absType[i]
       otherType = paramType.typesArray()[i]
       if (myType != otherType):
-        print ('ERROR no se puede aplicar para estos parametros')
+        sys.stderr.write('ERROR no se puede aplicar para estos parametros')
         # traceback.print_stack()
-        exit()
+        sys.exit(1)
     return Type(absType[len(paramType.typesArray()):len(absType)])

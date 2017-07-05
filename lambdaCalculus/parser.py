@@ -71,8 +71,8 @@ def p_atype_type(p):
   p[0] = Type([p[2].typesArray()])
 
 def p_error(p):
-    print("Syntax Error")
-    exit()
+    sys.stderr.write("Syntax Error")
+    sys.exit(1)
 
 # Build the parser
 parser = yacc.yacc(debug=True)

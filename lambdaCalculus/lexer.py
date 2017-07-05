@@ -81,7 +81,7 @@ def t_LAMBDA(t):
 
 # Error handling rule
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    sys.stderr.write("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
 # Build the lexer
