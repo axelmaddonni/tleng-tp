@@ -20,7 +20,7 @@ class Nat(Expression):
     start = ''
     end = ''
     for x in xrange(0,self._value):
-      start += 'suc('
+      start += 'succ('
       end += ')'
     return start + str(0) + end
 
@@ -334,7 +334,7 @@ class Application(Expression):
     return self
 
   def isFree(self):
-    return self._paramTerm.isFree()
+    return self._absTerm.isFree() or self._paramTerm.isFree()
 
 class Type:
   def __init__(self, typesArray):
