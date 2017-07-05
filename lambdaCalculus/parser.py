@@ -1,3 +1,5 @@
+# coding=utf-8
+
 """Parser LALR de lambdaCalc."""
 import ply.yacc as yacc
 from .lexer import tokens
@@ -59,7 +61,7 @@ def p_type_atype(p):
 
 def p_type_to(p):
   '''type : atype TO type '''
-  p[0] = Type([p[1].typesArray() + p[3].typesArray()])
+  p[0] = Type([p[1].typesArray(), p[3].typesArray()])
 
 def p_atype_base(p):
   '''atype : TBOOL
@@ -68,10 +70,10 @@ def p_atype_base(p):
 
 def p_atype_type(p):
   '''atype : '(' type ')' '''
-  p[0] = Type([p[2].typesArray()])
+  p[0] = Type(p[2].typesArray())
 
 def p_error(p):
-    sys.stderr.write("Syntax Error")
+    sys.stderr.write("Syntax Error. Asegúrese que la cadena se ingresó entre commilas dobles.\n")
     sys.exit(1)
 
 # Build the parser

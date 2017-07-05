@@ -1,3 +1,5 @@
+# coding=utf-8
+
 """Archivo principal de lambdaCalc."""
 from lambdaCalculus import parse
 import sys
